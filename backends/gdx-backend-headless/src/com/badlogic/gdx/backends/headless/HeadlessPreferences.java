@@ -34,18 +34,34 @@ import java.util.Properties;
 
 public class HeadlessPreferences implements Preferences {
 	private final Properties properties = new Properties();
-	private final FileHandle file;
+	private FileHandle file;
 
 	public HeadlessPreferences(String name, String directory) {
-		this(new HeadlessFileHandle(new File(directory, name), FileType.External));
+		this(new HeadlessFileHandle(new File(directory, name), FileType.External), null);
+	}
+
+	public HeadlessPreferences(String name, String directory, FileType fileType) {
+		this(new HeadlessFileHandle(new File(directory, name), fileType), null);
+	}
+
+	public HeadlessPreferences(String name, String directory, FileType fileType, String backupDirectory, FileType backupFileType) {
+		this(new HeadlessFileHandle(new File(directory, name), fileType),
+				 new HeadlessFileHandle(new File(backupDirectory, name), backupFileType));
 	}
 
 	public HeadlessPreferences(FileHandle file) {
+		this(file, null);
+	}
+
+	public HeadlessPreferences(FileHandle file, FileHandle backupFile) {
 		this.file = file;
-		if (!file.exists()) return;
+		if (backupFile != null && !file.exists()) {
+			if (!backupFile.exists()) return;
+			this.file = backupFile;
+		}
 		InputStream in = null;
 		try {
-			in = new BufferedInputStream(file.read());
+			in = new BufferedInputStream(this.file.read());
 			properties.loadFromXML(in);
 		} catch (Throwable t) {
 			t.printStackTrace();

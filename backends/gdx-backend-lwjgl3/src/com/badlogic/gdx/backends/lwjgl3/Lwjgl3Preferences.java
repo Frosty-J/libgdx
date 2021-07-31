@@ -34,18 +34,25 @@ import com.badlogic.gdx.utils.StreamUtils;
 
 public class Lwjgl3Preferences implements Preferences {
 	private final Properties properties = new Properties();
-	private final FileHandle file;
+	private FileHandle file;
 
 	public Lwjgl3Preferences (String name, String directory) {
 		this(new Lwjgl3FileHandle(new File(directory, name), FileType.External));
 	}
 
 	public Lwjgl3Preferences (FileHandle file) {
+		this(file, null);
+	}
+
+	public Lwjgl3Preferences (FileHandle file, FileHandle backupFile) {
 		this.file = file;
-		if (!file.exists()) return;
+		if (backupFile != null && !file.exists()) {
+			if (!backupFile.exists()) return;
+			this.file = backupFile;
+		}
 		InputStream in = null;
 		try {
-			in = new BufferedInputStream(file.read());
+			in = new BufferedInputStream(this.file.read());
 			properties.loadFromXML(in);
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -188,4 +195,5 @@ public class Lwjgl3Preferences implements Preferences {
 	public void remove (String key) {
 		properties.remove(key);
 	}
+
 }

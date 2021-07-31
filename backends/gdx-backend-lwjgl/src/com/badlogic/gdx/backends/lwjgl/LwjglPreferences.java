@@ -33,21 +33,38 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 
 public class LwjglPreferences implements Preferences {
-	private final String name;
+	private String name;
 	private final Properties properties = new Properties();
-	private final FileHandle file;
+	private FileHandle file;
 
 	public LwjglPreferences (String name, String directory) {
-		this(new LwjglFileHandle(new File(directory, name), FileType.External));
+		this(new LwjglFileHandle(new File(directory, name), FileType.External), null);
+	}
+
+	public LwjglPreferences (String name, String directory, FileType fileType) {
+		this(new LwjglFileHandle(new File(directory, name), fileType), null);
+	}
+
+	public LwjglPreferences (String name, String directory, FileType fileType, String backupDirectory, FileType backupFileType) {
+		this (new LwjglFileHandle(new File(directory, name), fileType),
+					new LwjglFileHandle(new File(backupDirectory, name), backupFileType));
 	}
 
 	public LwjglPreferences (FileHandle file) {
+		this(file, null);
+	}
+
+	public LwjglPreferences (FileHandle file, FileHandle backupFile) {
 		this.name = file.name();
 		this.file = file;
-		if (!file.exists()) return;
+		if (backupFile != null && !file.exists()) {
+			if (!backupFile.exists()) return;
+			this.name = backupFile.name();
+			this.file = backupFile;
+		}
 		InputStream in = null;
 		try {
-			in = new BufferedInputStream(file.read());
+			in = new BufferedInputStream(this.file.read());
 			properties.loadFromXML(in);
 		} catch (Throwable t) {
 			t.printStackTrace();
