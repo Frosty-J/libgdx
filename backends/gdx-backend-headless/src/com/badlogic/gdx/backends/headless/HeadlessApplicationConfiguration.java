@@ -32,7 +32,6 @@ public class HeadlessApplicationConfiguration {
 	/** The maximum number of threads to use for network requests. Default is {@link Integer#MAX_VALUE}. */
 	public int maxNetThreads = Integer.MAX_VALUE;
 
-
 	/**
 	 * Returns where preferences are stored by default.
 	 * Typically AppData/Roaming on Windows, Library/Preferences on macOS and .config on Linux.
