@@ -30,7 +30,6 @@ import com.badlogic.gdx.utils.Array;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.Locale;
 
 public class LwjglApplicationConfiguration {
 	/** If true, OpenAL will not be used. This means {@link Application#getAudio()} returns null and the gdx-openal.jar and OpenAL
@@ -231,6 +230,7 @@ public class LwjglApplicationConfiguration {
 
 		} else if (UIUtils.isLinux) {
 			return (System.getenv("XDG_CONFIG_HOME") != null) ? Files.FileType.Absolute : Files.FileType.External;
+
 		} else return Files.FileType.External;
 
 	}

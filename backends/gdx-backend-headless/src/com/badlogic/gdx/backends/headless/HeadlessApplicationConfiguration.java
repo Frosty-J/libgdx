@@ -19,8 +19,6 @@ package com.badlogic.gdx.backends.headless;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
-import java.util.Locale;
-
 public class HeadlessApplicationConfiguration {
 	/** The amount of updates targeted per second. Use 0 to never sleep;  negative to not call the render method at all.
 	 *  Default is 60. */
@@ -79,6 +77,7 @@ public class HeadlessApplicationConfiguration {
 
 		} else if (UIUtils.isLinux) {
 			return (System.getenv("XDG_CONFIG_HOME") != null) ? Files.FileType.Absolute : Files.FileType.External;
+
 		} else return Files.FileType.External;
 
 	}

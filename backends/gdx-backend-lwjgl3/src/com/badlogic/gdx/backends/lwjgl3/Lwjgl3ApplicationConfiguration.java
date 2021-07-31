@@ -18,7 +18,6 @@ package com.badlogic.gdx.backends.lwjgl3;
 
 import java.io.PrintStream;
 import java.nio.IntBuffer;
-import java.util.Locale;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
@@ -37,7 +36,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics.Lwjgl3Monitor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 
 public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
@@ -397,6 +395,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 
 		} else if (UIUtils.isLinux) {
 			return (System.getenv("XDG_CONFIG_HOME") != null) ? Files.FileType.Absolute : Files.FileType.External;
+
 		} else return Files.FileType.External;
 
 	}
