@@ -18,6 +18,8 @@ package com.badlogic.gdx.backends.lwjgl3;
 
 import java.io.PrintStream;
 import java.nio.IntBuffer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
@@ -371,9 +373,12 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		} else if (UIUtils.isLinux) {
 			String configHome = System.getenv("XDG_CONFIG_HOME");
 			if (configHome != null) {
-				//TODO: Someone with regex skills should make this work with all environment variables
-				if (configHome.contains("$HOME")) configHome = configHome.replace("$HOME", System.getenv("HOME"));
-				else if (configHome.contains("$")) configHome = null;
+				Pattern p = Pattern.compile("(?<!\\\\)\\$(\\w+)");
+				Matcher m = p.matcher(configHome);
+				while(m.find()) {
+					m.reset(configHome = configHome.replaceFirst("\\Q" + m.group() + "\\E",
+						Matcher.quoteReplacement(String.valueOf(System.getenv(m.group(1))))));
+				}
 			}
 			return (configHome != null) ? configHome : ".config";
 

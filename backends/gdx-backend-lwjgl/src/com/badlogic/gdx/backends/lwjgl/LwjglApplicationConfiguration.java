@@ -30,6 +30,8 @@ import com.badlogic.gdx.utils.Array;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LwjglApplicationConfiguration {
 	/** If true, OpenAL will not be used. This means {@link Application#getAudio()} returns null and the gdx-openal.jar and OpenAL
@@ -206,9 +208,12 @@ public class LwjglApplicationConfiguration {
 		} else if (UIUtils.isLinux) {
 			String configHome = System.getenv("XDG_CONFIG_HOME");
 			if (configHome != null) {
-				//TODO: Someone with regex skills should make this work with all environment variables
-				if (configHome.contains("$HOME")) configHome = configHome.replace("$HOME", System.getenv("HOME"));
-				else if (configHome.contains("$")) configHome = null;
+				Pattern p = Pattern.compile("(?<!\\\\)\\$(\\w+)");
+				Matcher m = p.matcher(configHome);
+				while(m.find()) {
+					m.reset(configHome = configHome.replaceFirst("\\Q" + m.group() + "\\E",
+						Matcher.quoteReplacement(String.valueOf(System.getenv(m.group(1))))));
+				}
 			}
 			return (configHome != null) ? configHome : ".config";
 
