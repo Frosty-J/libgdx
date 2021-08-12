@@ -232,15 +232,15 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 	/** Sets the directory where {@link Preferences} will be stored, as well as
 	 * the file type to be used to store them. Default varies by operating system.
 	 * Also sets whether .prefs should be checked for preferences (default location prior to libGDX 1.10.1). */
-	public void setPreferencesConfig(String directory, Files.FileType fileType, boolean legacy) {
+	public void setPreferencesConfig(String directory, Files.FileType fileType, boolean allowLegacy) {
 		this.preferencesDirectory = directory;
 		this.preferencesFileType = fileType;
-		this.allowLegacyPreferences = legacy;
+		this.allowLegacyPreferences = allowLegacy;
 	}
 
 	/** Sets whether .prefs should be checked for preferences (default location prior to libGDX 1.10.1). */
-	public void setPreferencesConfig(boolean legacy) {
-		this.allowLegacyPreferences = legacy;
+	public void setPreferencesConfig(boolean allowLegacy) {
+		this.allowLegacyPreferences = allowLegacy;
 	}
 
 	/**
