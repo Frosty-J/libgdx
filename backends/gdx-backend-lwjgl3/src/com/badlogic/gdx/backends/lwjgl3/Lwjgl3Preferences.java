@@ -44,11 +44,11 @@ public class Lwjgl3Preferences implements Preferences {
 		this(file, null);
 	}
 
-	public Lwjgl3Preferences (FileHandle file, FileHandle backupFile) {
+	public Lwjgl3Preferences (FileHandle file, FileHandle legacyFile) {
 		this.file = file;
-		if (backupFile != null && !file.exists()) {
-			if (!backupFile.exists()) return;
-			this.file = backupFile;
+		if (legacyFile != null && !file.exists()) {
+			if (!legacyFile.exists()) return;
+			this.file = legacyFile;
 		}
 		InputStream in = null;
 		try {

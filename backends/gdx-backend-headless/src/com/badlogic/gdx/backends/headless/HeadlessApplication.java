@@ -54,8 +54,8 @@ public class HeadlessApplication implements Application {
 	protected ApplicationLogger applicationLogger;
 	private final String preferencesDir;
 	private final Files.FileType preferencesType;
-	private final String preferencesBackupDir;
-	private final Files.FileType preferencesBackupType;
+	private final String preferencesLegacyDir;
+	private final Files.FileType preferencesLegacyType;
 
 	public HeadlessApplication(ApplicationListener listener) {
 		this(listener, null);
@@ -79,8 +79,8 @@ public class HeadlessApplication implements Application {
 
 		this.preferencesDir = config.preferencesDirectory;
 		this.preferencesType = config.preferencesFileType;
-		this.preferencesBackupDir = config.preferencesBackupDirectory;
-		this.preferencesBackupType = config.preferencesFileType;
+		this.preferencesLegacyDir = config.preferencesLegacyDirectory;
+		this.preferencesLegacyType = config.preferencesLegacyFileType;
 
 		Gdx.app = this;
 		Gdx.files = files;
@@ -221,7 +221,7 @@ public class HeadlessApplication implements Application {
 			Preferences prefs = new HeadlessPreferences(
 				name,
 				this.preferencesDir, this.preferencesType,
-				this.preferencesBackupDir, this.preferencesBackupType
+				this.preferencesLegacyDir, this.preferencesLegacyType
 			);
 			preferences.put(name, prefs);
 			return prefs;

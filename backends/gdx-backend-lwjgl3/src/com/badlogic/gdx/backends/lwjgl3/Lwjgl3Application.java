@@ -330,7 +330,7 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		} else {
 			Preferences prefs = new Lwjgl3Preferences(
 					new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType),
-					new Lwjgl3FileHandle(new File(config.preferencesBackupDirectory, name), config.preferencesBackupFileType));
+					new Lwjgl3FileHandle(new File(config.preferencesLegacyDirectory, name), config.preferencesLegacyFileType));
 			preferences.put(name, prefs);
 			return prefs;
 		}

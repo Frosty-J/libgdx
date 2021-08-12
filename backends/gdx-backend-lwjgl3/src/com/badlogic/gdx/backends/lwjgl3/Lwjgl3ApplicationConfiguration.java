@@ -64,8 +64,8 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 
 	String preferencesDirectory = getDefaultPreferencesDirectory();
 	Files.FileType preferencesFileType = getDefaultPreferencesFileType();
-	String preferencesBackupDirectory = ".prefs/";
-	Files.FileType preferencesBackupFileType = FileType.External;
+	String preferencesLegacyDirectory = ".prefs/";
+	Files.FileType preferencesLegacyFileType = FileType.External;
 
 	HdpiMode hdpiMode = HdpiMode.Logical;
 
@@ -99,8 +99,8 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		foregroundFPS = config.foregroundFPS;
 		preferencesDirectory = config.preferencesDirectory;
 		preferencesFileType = config.preferencesFileType;
-		preferencesBackupDirectory = config.preferencesBackupDirectory;
-		preferencesBackupFileType = config.preferencesBackupFileType;
+		preferencesLegacyDirectory = config.preferencesLegacyDirectory;
+		preferencesLegacyFileType = config.preferencesLegacyFileType;
 		hdpiMode = config.hdpiMode;
 		debug = config.debug;
 		debugStream = config.debugStream;
@@ -233,11 +233,11 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 	}
 
 	public void setPreferencesConfig(String preferencesDirectory, Files.FileType preferencesFileType,
-																	 String preferencesBackupDirectory, Files.FileType preferencesBackupFileType) {
+																	 String preferencesLegacyDirectory, Files.FileType preferencesLegacyFileType) {
 		this.preferencesDirectory = preferencesDirectory;
 		this.preferencesFileType = preferencesFileType;
-		this.preferencesBackupDirectory = preferencesBackupDirectory;
-		this.preferencesBackupFileType = preferencesBackupFileType;
+		this.preferencesLegacyDirectory = preferencesLegacyDirectory;
+		this.preferencesLegacyFileType = preferencesLegacyFileType;
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 			String windir = System.getenv("WINDIR");
 			return (appdata != null) ? appdata // 2000/XP/Vista/7/8/10/11
 				: (windir != null) ? windir + "/Application Data" // 95/98/Me
-				: preferencesBackupDirectory; // Default to backup directory (probably ~/.prefs/) if it's broken
+				: preferencesLegacyDirectory; // Default to legacy directory (probably ~/.prefs/) if it's broken
 
 		} else if (UIUtils.isMac) {
 			return "Library/Preferences";
@@ -382,7 +382,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 			}
 			return (configHome != null) ? configHome : ".config";
 
-		} else return preferencesBackupDirectory;
+		} else return preferencesLegacyDirectory;
 
 	}
 
@@ -393,7 +393,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 
 		if (UIUtils.isWindows) {
 			return (System.getenv("APPDATA") != null || System.getenv("WINDIR") != null)
-				? Files.FileType.Absolute : preferencesBackupFileType;
+				? Files.FileType.Absolute : preferencesLegacyFileType;
 
 		} else if (UIUtils.isMac) {
 			return Files.FileType.External;

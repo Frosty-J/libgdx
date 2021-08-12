@@ -44,20 +44,20 @@ public class HeadlessPreferences implements Preferences {
 		this(new HeadlessFileHandle(new File(directory, name), fileType), null);
 	}
 
-	public HeadlessPreferences(String name, String directory, FileType fileType, String backupDirectory, FileType backupFileType) {
+	public HeadlessPreferences(String name, String directory, FileType fileType, String legacyDirectory, FileType legacyFileType) {
 		this(new HeadlessFileHandle(new File(directory, name), fileType),
-				 new HeadlessFileHandle(new File(backupDirectory, name), backupFileType));
+				 new HeadlessFileHandle(new File(legacyDirectory, name), legacyFileType));
 	}
 
 	public HeadlessPreferences(FileHandle file) {
 		this(file, null);
 	}
 
-	public HeadlessPreferences(FileHandle file, FileHandle backupFile) {
+	public HeadlessPreferences(FileHandle file, FileHandle legacyFile) {
 		this.file = file;
-		if (backupFile != null && !file.exists()) {
-			if (!backupFile.exists()) return;
-			this.file = backupFile;
+		if (legacyFile != null && !file.exists()) {
+			if (!legacyFile.exists()) return;
+			this.file = legacyFile;
 		}
 		InputStream in = null;
 		try {
