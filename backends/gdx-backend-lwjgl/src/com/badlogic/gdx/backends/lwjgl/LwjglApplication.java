@@ -58,8 +58,7 @@ public class LwjglApplication implements LwjglApplicationBase {
 	protected ApplicationLogger applicationLogger;
 	protected String preferencesDir;
 	protected Files.FileType preferencesFileType;
-	protected String preferencesLegacyDir;
-	protected Files.FileType preferencesLegacyFileType;
+	protected boolean preferencesLegacy;
 
 	public LwjglApplication (ApplicationListener listener, String title, int width, int height) {
 		this(listener, createConfig(title, width, height));
@@ -101,8 +100,7 @@ public class LwjglApplication implements LwjglApplicationBase {
 		this.listener = listener;
 		this.preferencesDir = config.preferencesDirectory;
 		this.preferencesFileType = config.preferencesFileType;
-		this.preferencesLegacyDir = config.preferencesLegacyDirectory;
-		this.preferencesLegacyFileType = config.preferencesLegacyFileType;
+		this.preferencesLegacy = config.allowLegacyPreferences;
 
 		Gdx.app = this;
 		Gdx.graphics = graphics;
@@ -352,9 +350,14 @@ public class LwjglApplication implements LwjglApplicationBase {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs = new LwjglPreferences(
-				new LwjglFileHandle(new File(preferencesDir, name), preferencesFileType),
-				new LwjglFileHandle(new File(preferencesLegacyDir, name), preferencesLegacyFileType));
+			Preferences prefs;
+			if (preferencesLegacy) {
+				prefs = new LwjglPreferences(
+					new LwjglFileHandle(new File(preferencesDir, name), preferencesFileType),
+					new LwjglFileHandle(new File(".prefs", name), Files.FileType.External));
+			} else {
+				prefs = new LwjglPreferences(new LwjglFileHandle(new File(preferencesDir, name), preferencesFileType));
+			}
 			preferences.put(name, prefs);
 			return prefs;
 		}

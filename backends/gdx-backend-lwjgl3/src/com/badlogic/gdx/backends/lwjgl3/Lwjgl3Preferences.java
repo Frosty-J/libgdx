@@ -40,6 +40,15 @@ public class Lwjgl3Preferences implements Preferences {
 		this(new Lwjgl3FileHandle(new File(directory, name), FileType.External));
 	}
 
+	public Lwjgl3Preferences (String name, String directory, FileType fileType) {
+		this(new Lwjgl3FileHandle(new File(directory, name), fileType), null);
+	}
+
+	public Lwjgl3Preferences (String name, String directory, FileType fileType, String legacyDirectory, FileType legacyFileType) {
+		this (new Lwjgl3FileHandle(new File(directory, name), fileType),
+					new Lwjgl3FileHandle(new File(legacyDirectory, name), legacyFileType));
+	}
+
 	public Lwjgl3Preferences (FileHandle file) {
 		this(file, null);
 	}

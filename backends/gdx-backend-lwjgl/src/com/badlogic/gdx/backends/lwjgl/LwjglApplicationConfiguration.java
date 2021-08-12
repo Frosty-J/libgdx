@@ -102,12 +102,10 @@ public class LwjglApplicationConfiguration {
 	public boolean allowSoftwareMode = false;
 	/** Preferences directory on the desktop. Default depends on operating system. */
 	public String preferencesDirectory = getDefaultPreferencesDirectory();
-	/** Another preferences directory. Exists for legacy reasons. */
-	public String preferencesLegacyDirectory = ".prefs/";
 	/** Preferences file type on the desktop. Default is FileType.External */
 	public Files.FileType preferencesFileType = getDefaultPreferencesFileType();
-	/** Another preferences file type. Exists for legacy reasons. */
-	public Files.FileType preferencesLegacyFileType = Files.FileType.External;
+	/** Whether .prefs should be checked for preferences (default location prior to libGDX 1.10.1) */
+	public boolean allowLegacyPreferences = true;
 	/** Callback used when trying to create a display, can handle failures, default value is null (disabled) */
 	public LwjglGraphics.SetDisplayModeCallback setDisplayModeCallback;
 	/** enable HDPI mode on Mac OS X **/
@@ -200,7 +198,7 @@ public class LwjglApplicationConfiguration {
 			String windir = System.getenv("WINDIR");
 			return (appdata != null) ? appdata // 2000/XP/Vista/7/8/10/11
 				: (windir != null) ? windir + "/Application Data" // 95/98/Me
-				: preferencesLegacyDirectory; // Default to legacy directory (probably ~/.prefs/) if it's broken
+				: ".prefs"; // Default to legacy directory if it's broken
 
 		} else if (UIUtils.isMac) {
 			return "Library/Preferences";
@@ -217,7 +215,7 @@ public class LwjglApplicationConfiguration {
 			}
 			return (configHome != null) ? configHome : ".config";
 
-		} else return preferencesLegacyDirectory;
+		} else return ".prefs";
 
 	}
 
@@ -228,7 +226,7 @@ public class LwjglApplicationConfiguration {
 
 		if (UIUtils.isWindows) {
 			return (System.getenv("APPDATA") != null || System.getenv("WINDIR") != null)
-				? Files.FileType.Absolute : preferencesLegacyFileType;
+				? Files.FileType.Absolute : FileType.External;
 
 		} else if (UIUtils.isMac) {
 			return Files.FileType.External;

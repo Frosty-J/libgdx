@@ -54,8 +54,7 @@ public class HeadlessApplication implements Application {
 	protected ApplicationLogger applicationLogger;
 	private final String preferencesDir;
 	private final Files.FileType preferencesType;
-	private final String preferencesLegacyDir;
-	private final Files.FileType preferencesLegacyType;
+	private final boolean preferencesLegacy;
 
 	public HeadlessApplication(ApplicationListener listener) {
 		this(listener, null);
@@ -79,8 +78,7 @@ public class HeadlessApplication implements Application {
 
 		this.preferencesDir = config.preferencesDirectory;
 		this.preferencesType = config.preferencesFileType;
-		this.preferencesLegacyDir = config.preferencesLegacyDirectory;
-		this.preferencesLegacyType = config.preferencesLegacyFileType;
+		this.preferencesLegacy = config.allowLegacyPreferences;
 
 		Gdx.app = this;
 		Gdx.files = files;
@@ -218,11 +216,15 @@ public class HeadlessApplication implements Application {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs = new HeadlessPreferences(
-				name,
-				this.preferencesDir, this.preferencesType,
-				this.preferencesLegacyDir, this.preferencesLegacyType
-			);
+			Preferences prefs;
+			if (preferencesLegacy) {
+				 prefs = new HeadlessPreferences(
+					 name,
+					 this.preferencesDir, this.preferencesType,
+					 ".prefs", Files.FileType.External);
+			} else {
+				prefs = new HeadlessPreferences(name, this.preferencesDir, this.preferencesType);
+			}
 			preferences.put(name, prefs);
 			return prefs;
 		}
