@@ -227,17 +227,16 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 	 * the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
 	 * and {@link FileType#External}.
 	 */
-	public void setPreferencesConfig(String preferencesDirectory, Files.FileType preferencesFileType) {
-		this.preferencesDirectory = preferencesDirectory;
-		this.preferencesFileType = preferencesFileType;
+	public void setPreferencesConfig(String directory, Files.FileType fileType) {
+		this.preferencesDirectory = directory;
+		this.preferencesFileType = fileType;
 	}
 
-	public void setPreferencesConfig(String preferencesDirectory, Files.FileType preferencesFileType,
-																	 String preferencesLegacyDirectory, Files.FileType preferencesLegacyFileType) {
-		this.preferencesDirectory = preferencesDirectory;
-		this.preferencesFileType = preferencesFileType;
-		this.preferencesLegacyDirectory = preferencesLegacyDirectory;
-		this.preferencesLegacyFileType = preferencesLegacyFileType;
+	public void setPreferencesConfig(String directory, Files.FileType fileType, String legacyDirectory, Files.FileType legacyFileType) {
+		this.preferencesDirectory = directory;
+		this.preferencesFileType = fileType;
+		this.preferencesLegacyDirectory = legacyDirectory;
+		this.preferencesLegacyFileType = legacyFileType;
 	}
 
 	/**
@@ -281,7 +280,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 		return new Lwjgl3Graphics.Lwjgl3DisplayMode(GLFW.glfwGetPrimaryMonitor(), videoMode.width(), videoMode.height(), videoMode.refreshRate(),
 				videoMode.redBits() + videoMode.greenBits() + videoMode.blueBits());
 	}
-	
+
 	/**
 	 * @return the currently active {@link DisplayMode} of the given monitor
 	 */
