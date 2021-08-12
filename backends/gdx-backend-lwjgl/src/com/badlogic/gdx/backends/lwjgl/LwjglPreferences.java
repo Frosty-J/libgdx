@@ -45,22 +45,22 @@ public class LwjglPreferences implements Preferences {
 		this(new LwjglFileHandle(new File(directory, name), fileType), null);
 	}
 
-	public LwjglPreferences (String name, String directory, FileType fileType, String backupDirectory, FileType backupFileType) {
+	public LwjglPreferences (String name, String directory, FileType fileType, String legacyDirectory, FileType legacyFileType) {
 		this (new LwjglFileHandle(new File(directory, name), fileType),
-					new LwjglFileHandle(new File(backupDirectory, name), backupFileType));
+					new LwjglFileHandle(new File(legacyDirectory, name), legacyFileType));
 	}
 
 	public LwjglPreferences (FileHandle file) {
 		this(file, null);
 	}
 
-	public LwjglPreferences (FileHandle file, FileHandle backupFile) {
+	public LwjglPreferences (FileHandle file, FileHandle legacyFile) {
 		this.name = file.name();
 		this.file = file;
-		if (backupFile != null && !file.exists()) {
-			if (!backupFile.exists()) return;
-			this.name = backupFile.name();
-			this.file = backupFile;
+		if (legacyFile != null && !file.exists()) {
+			if (!legacyFile.exists()) return;
+			this.name = legacyFile.name();
+			this.file = legacyFile;
 		}
 		InputStream in = null;
 		try {

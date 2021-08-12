@@ -29,8 +29,8 @@ public class HeadlessApplicationConfiguration {
 	/** Preferences directory for headless. Default depends on operating system. */
 	public String preferencesDirectory = getDefaultPreferencesDirectory();
 	public Files.FileType preferencesFileType = getDefaultPreferencesFileType();
-	public String preferencesBackupDirectory = ".prefs/";
-	public Files.FileType preferencesBackupFileType = Files.FileType.External;
+	public String preferencesLegacyDirectory = ".prefs/";
+	public Files.FileType preferencesLegacyFileType = Files.FileType.External;
 
 	/** The maximum number of threads to use for network requests. Default is {@link Integer#MAX_VALUE}. */
 	public int maxNetThreads = Integer.MAX_VALUE;
@@ -47,7 +47,7 @@ public class HeadlessApplicationConfiguration {
 			String windir = System.getenv("WINDIR");
 			return (appdata != null) ? appdata // 2000/XP/Vista/7/8/10/11
 				: (windir != null) ? windir + "/Application Data" // 95/98/Me
-				: preferencesBackupDirectory; // Default to backup directory (probably ~/.prefs/) if it's broken
+				: preferencesLegacyDirectory; // Default to legacy directory (probably ~/.prefs/) if it's broken
 
 		} else if (UIUtils.isMac) {
 			return "Library/Preferences";
@@ -64,7 +64,7 @@ public class HeadlessApplicationConfiguration {
 			}
 			return (configHome != null) ? configHome : ".config";
 
-		} else return preferencesBackupDirectory;
+		} else return preferencesLegacyDirectory;
 
 	}
 
@@ -75,7 +75,7 @@ public class HeadlessApplicationConfiguration {
 
 		if (UIUtils.isWindows) {
 			return (System.getenv("APPDATA") != null || System.getenv("WINDIR") != null)
-				? Files.FileType.Absolute : preferencesBackupFileType;
+				? Files.FileType.Absolute : preferencesLegacyFileType;
 
 		} else if (UIUtils.isMac) {
 			return Files.FileType.External;
