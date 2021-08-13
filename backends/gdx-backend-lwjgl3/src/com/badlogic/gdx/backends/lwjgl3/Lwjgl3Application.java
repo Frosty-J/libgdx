@@ -328,16 +328,11 @@ public class Lwjgl3Application implements Lwjgl3ApplicationBase {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs;
-			if (config.allowLegacyPreferences) {
-				prefs = new Lwjgl3Preferences(
-					new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType),
-					new Lwjgl3FileHandle(new File(".prefs", name), Files.FileType.External));
+			Preferences prefs = new Lwjgl3Preferences(
+				new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType),
+				config.allowLegacyPreferences
+			);
 				preferences.put(name, prefs);
-			} else {
-				prefs = new Lwjgl3Preferences(
-					new Lwjgl3FileHandle(new File(config.preferencesDirectory, name), config.preferencesFileType));
-			}
 			return prefs;
 		}
 	}

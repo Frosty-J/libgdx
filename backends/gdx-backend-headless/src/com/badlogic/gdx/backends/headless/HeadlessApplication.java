@@ -216,15 +216,7 @@ public class HeadlessApplication implements Application {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs;
-			if (preferencesLegacy) {
-				 prefs = new HeadlessPreferences(
-					 name,
-					 this.preferencesDir, this.preferencesType,
-					 ".prefs", Files.FileType.External);
-			} else {
-				prefs = new HeadlessPreferences(name, this.preferencesDir, this.preferencesType);
-			}
+			Preferences prefs = new HeadlessPreferences(name, this.preferencesDir, this.preferencesType, this.preferencesLegacy);
 			preferences.put(name, prefs);
 			return prefs;
 		}

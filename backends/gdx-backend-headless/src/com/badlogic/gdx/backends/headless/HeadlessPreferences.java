@@ -16,6 +16,7 @@
 
 package com.badlogic.gdx.backends.headless;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
@@ -37,25 +38,25 @@ public class HeadlessPreferences implements Preferences {
 	private FileHandle file;
 
 	public HeadlessPreferences(String name, String directory) {
-		this(new HeadlessFileHandle(new File(directory, name), FileType.External), null);
+		this(new HeadlessFileHandle(new File(directory, name), FileType.External), false);
 	}
 
 	public HeadlessPreferences(String name, String directory, FileType fileType) {
-		this(new HeadlessFileHandle(new File(directory, name), fileType), null);
+		this(new HeadlessFileHandle(new File(directory, name), fileType), false);
 	}
 
-	public HeadlessPreferences(String name, String directory, FileType fileType, String legacyDirectory, FileType legacyFileType) {
-		this(new HeadlessFileHandle(new File(directory, name), fileType),
-				 new HeadlessFileHandle(new File(legacyDirectory, name), legacyFileType));
+	public HeadlessPreferences(String name, String directory, FileType fileType, boolean legacy) {
+		this(new HeadlessFileHandle(new File(directory, name), fileType), legacy);
 	}
 
 	public HeadlessPreferences(FileHandle file) {
-		this(file, null);
+		this(file, false);
 	}
 
-	public HeadlessPreferences(FileHandle file, FileHandle legacyFile) {
+	public HeadlessPreferences(FileHandle file, boolean legacy) {
 		this.file = file;
-		if (legacyFile != null && !file.exists()) {
+		if (legacy && !file.exists()) {
+			FileHandle legacyFile = new HeadlessFileHandle(new File(".prefs", file.name()), Files.FileType.External);
 			if (!legacyFile.exists()) return;
 			this.file = legacyFile;
 		}
