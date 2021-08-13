@@ -368,7 +368,7 @@ public class Lwjgl3ApplicationConfiguration extends Lwjgl3WindowConfiguration {
 			String windir = System.getenv("WINDIR");
 			return (appdata != null) ? appdata // 2000/XP/Vista/7/8/10/11
 				: (windir != null) ? windir + "/Application Data" // 95/98/Me
-				: ".prefs"; // Default to legacy directory (probably ~/.prefs/) if it's broken
+				: ".prefs"; // Default to legacy directory if it's broken
 
 		} else if (UIUtils.isMac) {
 			return "Library/Preferences";
