@@ -45,8 +45,8 @@ public class HeadlessApplicationConfiguration {
 		if (UIUtils.isWindows) {
 			String appdata = System.getenv("APPDATA");
 			String windir = System.getenv("WINDIR");
-			return (appdata != null) ? appdata // 2000/XP/Vista/7/8/10/11
-				: (windir != null) ? windir + "/Application Data" // 95/98/Me
+			return appdata != null ? appdata // 2000/XP/Vista/7/8/10/11
+				: windir != null ? windir + "/Application Data" // 95/98/Me
 				: ".prefs"; // Default to legacy directory if it's broken
 
 		} else if (UIUtils.isMac) {
@@ -62,7 +62,7 @@ public class HeadlessApplicationConfiguration {
 						Matcher.quoteReplacement(String.valueOf(System.getenv(m.group(1))))));
 				}
 			}
-			return (configHome != null) ? configHome : ".config";
+			return configHome != null ? configHome : ".config";
 
 		} else return ".prefs";
 
@@ -81,7 +81,7 @@ public class HeadlessApplicationConfiguration {
 			return Files.FileType.External;
 
 		} else if (UIUtils.isLinux) {
-			return (System.getenv("XDG_CONFIG_HOME") != null) ? Files.FileType.Absolute : Files.FileType.External;
+			return System.getenv("XDG_CONFIG_HOME") != null ? Files.FileType.Absolute : Files.FileType.External;
 
 		} else return Files.FileType.External;
 
