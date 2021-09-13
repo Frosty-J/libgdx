@@ -46,7 +46,7 @@ public class LwjglPreferences implements Preferences {
 	}
 
 	public LwjglPreferences (String name, String directory, FileType fileType, boolean legacy) {
-		this (new LwjglFileHandle(new File(directory, name), fileType), legacy);
+		this(new LwjglFileHandle(new File(directory, name), fileType), legacy);
 	}
 
 	public LwjglPreferences (FileHandle file) {

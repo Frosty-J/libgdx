@@ -37,23 +37,23 @@ public class HeadlessPreferences implements Preferences {
 	private final Properties properties = new Properties();
 	private FileHandle file;
 
-	public HeadlessPreferences(String name, String directory) {
+	public HeadlessPreferences (String name, String directory) {
 		this(new HeadlessFileHandle(new File(directory, name), FileType.External), false);
 	}
 
-	public HeadlessPreferences(String name, String directory, FileType fileType) {
+	public HeadlessPreferences (String name, String directory, FileType fileType) {
 		this(new HeadlessFileHandle(new File(directory, name), fileType), false);
 	}
 
-	public HeadlessPreferences(String name, String directory, FileType fileType, boolean legacy) {
+	public HeadlessPreferences (String name, String directory, FileType fileType, boolean legacy) {
 		this(new HeadlessFileHandle(new File(directory, name), fileType), legacy);
 	}
 
-	public HeadlessPreferences(FileHandle file) {
+	public HeadlessPreferences (FileHandle file) {
 		this(file, false);
 	}
 
-	public HeadlessPreferences(FileHandle file, boolean legacy) {
+	public HeadlessPreferences (FileHandle file, boolean legacy) {
 		this.file = file;
 		if (legacy && !file.exists()) {
 			FileHandle legacyFile = new HeadlessFileHandle(new File(".prefs", file.name()), Files.FileType.External);

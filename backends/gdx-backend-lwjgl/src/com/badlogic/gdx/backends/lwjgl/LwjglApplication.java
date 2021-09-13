@@ -350,10 +350,8 @@ public class LwjglApplication implements LwjglApplicationBase {
 		if (preferences.containsKey(name)) {
 			return preferences.get(name);
 		} else {
-			Preferences prefs = new LwjglPreferences(
-				new LwjglFileHandle(new File(preferencesDir, name), preferencesFileType),
-				preferencesLegacy
-			);
+			Preferences prefs = new LwjglPreferences(new LwjglFileHandle(new File(preferencesDir, name), preferencesFileType),
+				preferencesLegacy);
 			preferences.put(name, prefs);
 			return prefs;
 		}

@@ -23,8 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HeadlessApplicationConfiguration {
-	/** The amount of updates targeted per second. Use 0 to never sleep;  negative to not call the render method at all.
-	 *  Default is 60. */
+	/** The amount of updates targeted per second. Use 0 to never sleep; negative to not call the render method at all. Default is
+	 * 60. */
 	public int updatesPerSecond = 60;
 	/** Preferences directory for headless. Default depends on operating system. */
 	public String preferencesDirectory = getDefaultPreferencesDirectory();
@@ -35,19 +35,17 @@ public class HeadlessApplicationConfiguration {
 	/** The maximum number of threads to use for network requests. Default is {@link Integer#MAX_VALUE}. */
 	public int maxNetThreads = Integer.MAX_VALUE;
 
-	/**
-	 * Returns where preferences are stored by default.
-	 * Typically AppData/Roaming on Windows, Library/Preferences on macOS and .config on Linux.
-	 * @return The default preferences directory.
-	 */
-	public String getDefaultPreferencesDirectory() {
+	/** Returns where preferences are stored by default. Typically AppData/Roaming on Windows, Library/Preferences on macOS and
+	 * .config on Linux.
+	 * @return The default preferences directory. */
+	public String getDefaultPreferencesDirectory () {
 
 		if (UIUtils.isWindows) {
 			String appdata = System.getenv("APPDATA");
 			String windir = System.getenv("WINDIR");
 			return appdata != null ? appdata // 2000/XP/Vista/7/8/10/11
 				: windir != null ? windir + "/Application Data" // 95/98/Me
-				: ".prefs"; // Default to legacy directory if it's broken
+					: ".prefs"; // Default to legacy directory if it's broken
 
 		} else if (UIUtils.isMac) {
 			return "Library/Preferences";
@@ -57,25 +55,24 @@ public class HeadlessApplicationConfiguration {
 			if (configHome != null) {
 				Pattern p = Pattern.compile("(?<!\\\\)\\$(\\w+)");
 				Matcher m = p.matcher(configHome);
-				while(m.find()) {
+				while (m.find()) {
 					m.reset(configHome = configHome.replaceFirst("\\Q" + m.group() + "\\E",
 						Matcher.quoteReplacement(String.valueOf(System.getenv(m.group(1))))));
 				}
 			}
 			return configHome != null ? configHome : ".config";
 
-		} else return ".prefs";
+		} else
+			return ".prefs";
 
 	}
 
-	/**
-	 * @return The default FileType for the operating system - External or Absolute.
-	 */
-	public Files.FileType getDefaultPreferencesFileType() {
+	/** @return The default FileType for the operating system - External or Absolute. */
+	public Files.FileType getDefaultPreferencesFileType () {
 
 		if (UIUtils.isWindows) {
-			return (System.getenv("APPDATA") != null || System.getenv("WINDIR") != null)
-				? Files.FileType.Absolute : Files.FileType.External;
+			return (System.getenv("APPDATA") != null || System.getenv("WINDIR") != null) ? Files.FileType.Absolute
+				: Files.FileType.External;
 
 		} else if (UIUtils.isMac) {
 			return Files.FileType.External;
@@ -83,7 +80,8 @@ public class HeadlessApplicationConfiguration {
 		} else if (UIUtils.isLinux) {
 			return System.getenv("XDG_CONFIG_HOME") != null ? Files.FileType.Absolute : Files.FileType.External;
 
-		} else return Files.FileType.External;
+		} else
+			return Files.FileType.External;
 
 	}
 
