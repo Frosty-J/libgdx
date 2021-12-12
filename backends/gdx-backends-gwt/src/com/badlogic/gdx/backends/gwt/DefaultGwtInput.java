@@ -345,9 +345,9 @@ public class DefaultGwtInput extends AbstractInput implements GwtInput {
 		if (peripheral == Peripheral.Accelerometer) return GwtAccelerometer.isSupported() && isAccelerometerPresent()
 			&& GwtFeaturePolicy.allowsFeature(GwtAccelerometer.PERMISSION);
 		if (peripheral == Peripheral.Compass) return false;
-		if (peripheral == Peripheral.HardwareKeyboard) return !GwtApplication.isMobileDevice();
+		if (peripheral == Peripheral.HardwareKeyboard) return !Gdx.app.isMobile();
 		if (peripheral == Peripheral.MultitouchScreen) return isTouchScreen();
-		if (peripheral == Peripheral.OnscreenKeyboard) return GwtApplication.isMobileDevice();
+		if (peripheral == Peripheral.OnscreenKeyboard) return Gdx.app.isMobile();
 		if (peripheral == Peripheral.Vibrator) return false;
 		return false;
 	}
