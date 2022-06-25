@@ -325,7 +325,7 @@ public interface Graphics {
 
 	/** Create a new cursor represented by the {@link com.badlogic.gdx.graphics.Pixmap}. The Pixmap must be in RGBA8888 format,
 	 * width & height must be powers-of-two greater than zero (not necessarily equal) and of a certain minimum size (32x32 is a
-	 * safe bet), and alpha transparency must be single-bit (i.e., 0x00 or 0xFF only). This function returns a Cursor object that
+	 * safe bet). Prior to Windows Vista, alpha transparency must be single-bit (i.e., 0x00 or 0xFF only). This function returns a Cursor object that
 	 * can be set as the system cursor by calling {@link #setCursor(Cursor)} .
 	 *
 	 * @param pixmap the mouse cursor image as a {@link com.badlogic.gdx.graphics.Pixmap}
@@ -333,6 +333,21 @@ public interface Graphics {
 	 * @param yHotspot the y location of the hotspot pixel within the cursor image (origin top-left corner)
 	 * @return a cursor object that can be used by calling {@link #setCursor(Cursor)} or null if not supported */
 	Cursor newCursor (Pixmap pixmap, int xHotspot, int yHotspot);
+
+	/** Create a new cursor with multiple pixmaps to support HDPI displays.
+	 * The scale and hotspots for larger cursors are automatically determined. The first pixmap is the 1x version.
+	 * For example, if given a 32x32 and 64x64 pixmap, the 64px version will get used on 2x displays.
+	 * Supplying 1x and 2x cursors is usually sufficient, though you may wish to supply cursors in increments of .25x, as this is the step size Windows uses.
+	 * On the web, absent sizes will be scaled accordingly (e.g. if a 32px and 64px pixmap are provided, the 64px one will be downscaled to 48px on a 1.5x screen).
+	 * Maximum size in Chrome and Firefox is 128px after scaling (0.5x 64px, 1x 128px, 2x 256px, etc.).
+	 * Behavior may vary between operating systems. Chrome on Windows displays 128x128 at native size but Chrome on Linux downscales to 64x64?
+	 * Refer to {@link #newCursor(Pixmap, int, int)} for more details.
+	 * @param xHotspot
+	 * @param yHotspot
+	 * @param pixmaps
+	 * @return
+	 */
+	Cursor newCursor (int xHotspot, int yHotspot, Pixmap... pixmaps);
 
 	/** Only viable on the lwjgl-backend and on the gwt-backend. Browsers that support cursor:url() and support the png format (the
 	 * pixmap is converted to a data-url of type image/png) should also support custom cursors. Will set the mouse cursor image to

@@ -19,46 +19,58 @@ package com.badlogic.gdx.backends.gwt;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.google.gwt.user.client.Window;
 
 public class GwtCursor implements Cursor {
-	String cssCursorProperty;
+	String cssCursorProperty = "";
 
 	public GwtCursor (Pixmap pixmap, int xHotspot, int yHotspot) {
-		if (pixmap == null) {
+		this(xHotspot, yHotspot, pixmap);
+	}
+
+	public GwtCursor (int xHotspot, int yHotspot, Pixmap... pixmaps) {
+		if (pixmaps == null) {
 			this.cssCursorProperty = "auto";
 			return;
 		}
 
-		if (pixmap.getFormat() != Pixmap.Format.RGBA8888) {
-			throw new GdxRuntimeException("Cursor image pixmap is not in RGBA8888 format.");
+		float[] scales = new float[pixmaps.length];
+
+		StringBuilder cssCursorProperty = new StringBuilder();
+		cssCursorProperty.toString();
+
+		if (!imageSetCompatible()) {
+			cssCursorProperty
+				.append("url('")
+				.append(pixmaps[0].getCanvasElement().toDataUrl("image/png"))
+				.append("')")
+				.append(xHotspot)
+				.append(" ")
+				.append(yHotspot)
+				.append(", auto");
+		} else {
+			// Add vendor prefix for WebKit browsers (Chrome, Safari, Edge, etc.)
+			if (GwtApplication.agentInfo().isSafari()) cssCursorProperty.append("-webkit-");
+			cssCursorProperty
+				.append("image-set(url('")
+				.append(pixmaps[0].getCanvasElement().toDataUrl("image/png"))
+				.append("') 1x");
 		}
 
-		if ((pixmap.getWidth() & (pixmap.getWidth() - 1)) != 0) {
-			throw new GdxRuntimeException(
-				"Cursor image pixmap width of " + pixmap.getWidth() + " is not a power-of-two greater than zero.");
+		pixmapChecks(pixmaps);
+		hotspotChecks(xHotspot, yHotspot, pixmaps[0]);
+
+		boolean firstPixmap = true;
+		for (Pixmap pixmap : pixmaps) {
+
+			if (firstPixmap) {
+				firstPixmap = false;
+			} else {
+				scales[1] = (float) pixmap.getHeight() / pixmaps[0].getHeight();
+			}
+
 		}
 
-		if ((pixmap.getHeight() & (pixmap.getHeight() - 1)) != 0) {
-			throw new GdxRuntimeException(
-				"Cursor image pixmap height of " + pixmap.getHeight() + " is not a power-of-two greater than zero.");
-		}
-
-		if (xHotspot < 0 || xHotspot >= pixmap.getWidth()) {
-			throw new GdxRuntimeException(
-				"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + pixmap.getWidth() + ").");
-		}
-
-		if (yHotspot < 0 || yHotspot >= pixmap.getHeight()) {
-			throw new GdxRuntimeException(
-				"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + pixmap.getHeight() + ").");
-		}
-		cssCursorProperty = "url('";
-		cssCursorProperty += pixmap.getCanvasElement().toDataUrl("image/png");
-		cssCursorProperty += "')";
-		cssCursorProperty += xHotspot;
-		cssCursorProperty += " ";
-		cssCursorProperty += yHotspot;
-		cssCursorProperty += ",auto";
 	}
 
 	static String getNameForSystemCursor (SystemCursor systemCursor) {
@@ -92,4 +104,38 @@ public class GwtCursor implements Cursor {
 	@Override
 	public void dispose () {
 	}
+
+	private void pixmapChecks(Pixmap[] pixmaps) {
+		for (int i = 0; i < pixmaps.length; i++) {
+			if (pixmaps[i].getFormat() != Pixmap.Format.RGBA8888)
+				throw new GdxRuntimeException("Cursor image pixmap" + i + " is not in RGBA8888 format.");
+
+			if (pixmaps[i].getWidth() < 1)
+				throw new GdxRuntimeException(
+					"Cursor image pixmap" + i + " width of " + pixmaps[i].getWidth() + " is not greater than zero.");
+
+			if (pixmaps[i].getHeight() < 1)
+				throw new GdxRuntimeException(
+					"Cursor image pixmap" + i + " height of " + pixmaps[i].getHeight() + " is not greater than zero.");
+		}
+	}
+
+	private void hotspotChecks(int xHotspot, int yHotspot, Pixmap pixmap) {
+		if (xHotspot < 0 || xHotspot >= pixmap.getWidth())
+			throw new GdxRuntimeException(
+				"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + (pixmap.getWidth() - 1) + "].");
+
+		if (yHotspot < 0 || yHotspot >= pixmap.getHeight())
+			throw new GdxRuntimeException(
+				"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + (pixmap.getHeight() - 1) + "].");
+	}
+
+	/** Detect if Firefox version is compatible with image-set.
+	 * Other browsers have supported it long enough to be of little concern.
+	 * @return True if compatible with CSS property image-set, including if -webkit- prefix is required.
+	 */
+	private static native boolean imageSetCompatible() /*-{
+		let match = $wnd.navigator.userAgent.match(/Firefox\/([0-9]+)\./);
+		return match !== null && match[1] >= 88;
+	}-*/;
 }

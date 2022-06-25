@@ -557,8 +557,14 @@ public class GwtGraphics extends AbstractGraphics {
 	}
 
 	@Override
+	public Cursor newCursor (int xHotspot, int yHotspot, Pixmap... pixmaps) {
+		return new GwtCursor(xHotspot, yHotspot, pixmaps);
+	}
+
+	@Override
 	public void setCursor (Cursor cursor) {
 		((GwtApplication)Gdx.app).graphics.canvas.getStyle().setProperty("cursor", ((GwtCursor)cursor).cssCursorProperty);
+		//https://stackoverflow.com/a/50608223
 	}
 
 	@Override
