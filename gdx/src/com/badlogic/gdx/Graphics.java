@@ -339,7 +339,7 @@ public interface Graphics {
 	 * For example, if given a 32x32 and 64x64 pixmap, the 64px version will get used on 2x displays.
 	 * Supplying 1x and 2x cursors is usually sufficient, though you may wish to supply cursors in increments of .25x, as this is the step size Windows uses.
 	 * On the web, absent sizes will be scaled accordingly (e.g. if a 32px and 64px pixmap are provided, the 64px one will be downscaled to 48px on a 1.5x screen).
-	 * Maximum size in Chrome and Firefox is 128px after scaling (0.5x 64px, 1x 128px, 2x 256px, etc.).
+	 * Maximum size in Chrome and Firefox is 128px after scaling (0.5x 64px, 1x 128px, 2x 256px, etc.) and cursors larger than 32x32 can't exit the screen of their iframe.
 	 * Behavior may vary between operating systems. Chrome on Windows displays 128x128 at native size but Chrome on Linux downscales to 64x64?
 	 * Refer to {@link #newCursor(Pixmap, int, int)} for more details.
 	 * @param xHotspot
