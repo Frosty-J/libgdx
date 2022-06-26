@@ -20,12 +20,11 @@ import java.util.Map;
 
 /**
  * <p>
- * A Preference instance is a hash map holding different values. It is stored alongside your application, utilizing SharedPreferences on
- * Android, LocalStorage on GWT, and on iOS NSMutableDictionary will be written to the given file.
- * On desktop, a Java Preferences file will normally be stored in AppData (Windows), Library/Preferences (macOS) or .config (Linux).
- * This can be overridden in your launcher's configuration.
- * CAUTION: On the desktop platform, all libGDX Preferences share the same directory.
- * To avoid collisions, use specific names like "com.myname.game1.settings" instead of "settings".
+ * A Preference instance is a hash map holding different values. It is stored alongside your application, utilizing
+ * SharedPreferences on Android, LocalStorage on GWT, and on iOS NSMutableDictionary will be written to the given file. On
+ * desktop, a Java Preferences file will normally be stored in AppData (Windows), Library/Preferences (macOS) or .config (Linux).
+ * This can be overridden in your launcher's configuration. CAUTION: On the desktop platform, all libGDX Preferences share the
+ * same directory. To avoid collisions, use specific names like "com.myname.game1.settings" instead of "settings".
  * </p>
  * 
  * <p>
