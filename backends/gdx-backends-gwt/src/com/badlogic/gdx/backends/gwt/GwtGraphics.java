@@ -564,7 +564,7 @@ public class GwtGraphics extends AbstractGraphics {
 	@Override
 	public void setCursor (Cursor cursor) {
 		((GwtApplication)Gdx.app).graphics.canvas.getStyle().setProperty("cursor", ((GwtCursor)cursor).cssCursorProperty);
-		//https://stackoverflow.com/a/50608223
+		// https://stackoverflow.com/a/50608223
 	}
 
 	@Override

@@ -19,7 +19,6 @@ package com.badlogic.gdx.backends.gwt;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.google.gwt.user.client.Window;
 
 public class GwtCursor implements Cursor {
 	String cssCursorProperty = "";
@@ -40,21 +39,12 @@ public class GwtCursor implements Cursor {
 		cssCursorProperty.toString();
 
 		if (!imageSetCompatible()) {
-			cssCursorProperty
-				.append("url('")
-				.append(pixmaps[0].getCanvasElement().toDataUrl("image/png"))
-				.append("')")
-				.append(xHotspot)
-				.append(" ")
-				.append(yHotspot)
-				.append(", auto");
+			cssCursorProperty.append("url('").append(pixmaps[0].getCanvasElement().toDataUrl("image/png")).append("')")
+				.append(xHotspot).append(" ").append(yHotspot).append(", auto");
 		} else {
 			// Add vendor prefix for WebKit browsers (Chrome, Safari, Edge, etc.)
 			if (GwtApplication.agentInfo().isSafari()) cssCursorProperty.append("-webkit-");
-			cssCursorProperty
-				.append("image-set(url('")
-				.append(pixmaps[0].getCanvasElement().toDataUrl("image/png"))
-				.append("') 1x");
+			cssCursorProperty.append("image-set(url('").append(pixmaps[0].getCanvasElement().toDataUrl("image/png")).append("') 1x");
 		}
 
 		pixmapChecks(pixmaps);
@@ -66,7 +56,7 @@ public class GwtCursor implements Cursor {
 			if (firstPixmap) {
 				firstPixmap = false;
 			} else {
-				scales[1] = (float) pixmap.getHeight() / pixmaps[0].getHeight();
+				scales[1] = (float)pixmap.getHeight() / pixmaps[0].getHeight();
 			}
 
 		}
@@ -105,36 +95,31 @@ public class GwtCursor implements Cursor {
 	public void dispose () {
 	}
 
-	private void pixmapChecks(Pixmap[] pixmaps) {
+	private void pixmapChecks (Pixmap[] pixmaps) {
 		for (int i = 0; i < pixmaps.length; i++) {
 			if (pixmaps[i].getFormat() != Pixmap.Format.RGBA8888)
 				throw new GdxRuntimeException("Cursor image pixmap" + i + " is not in RGBA8888 format.");
 
-			if (pixmaps[i].getWidth() < 1)
-				throw new GdxRuntimeException(
-					"Cursor image pixmap" + i + " width of " + pixmaps[i].getWidth() + " is not greater than zero.");
+			if (pixmaps[i].getWidth() < 1) throw new GdxRuntimeException(
+				"Cursor image pixmap" + i + " width of " + pixmaps[i].getWidth() + " is not greater than zero.");
 
-			if (pixmaps[i].getHeight() < 1)
-				throw new GdxRuntimeException(
-					"Cursor image pixmap" + i + " height of " + pixmaps[i].getHeight() + " is not greater than zero.");
+			if (pixmaps[i].getHeight() < 1) throw new GdxRuntimeException(
+				"Cursor image pixmap" + i + " height of " + pixmaps[i].getHeight() + " is not greater than zero.");
 		}
 	}
 
-	private void hotspotChecks(int xHotspot, int yHotspot, Pixmap pixmap) {
-		if (xHotspot < 0 || xHotspot >= pixmap.getWidth())
-			throw new GdxRuntimeException(
-				"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + (pixmap.getWidth() - 1) + "].");
+	private void hotspotChecks (int xHotspot, int yHotspot, Pixmap pixmap) {
+		if (xHotspot < 0 || xHotspot >= pixmap.getWidth()) throw new GdxRuntimeException(
+			"xHotspot coordinate of " + xHotspot + " is not within image width bounds: [0, " + (pixmap.getWidth() - 1) + "].");
 
-		if (yHotspot < 0 || yHotspot >= pixmap.getHeight())
-			throw new GdxRuntimeException(
-				"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + (pixmap.getHeight() - 1) + "].");
+		if (yHotspot < 0 || yHotspot >= pixmap.getHeight()) throw new GdxRuntimeException(
+			"yHotspot coordinate of " + yHotspot + " is not within image height bounds: [0, " + (pixmap.getHeight() - 1) + "].");
 	}
 
-	/** Detect if Firefox version is compatible with image-set.
-	 * Other browsers have supported it long enough to be of little concern.
-	 * @return True if compatible with CSS property image-set, including if -webkit- prefix is required.
-	 */
-	private static native boolean imageSetCompatible() /*-{
+	/** Detect if Firefox version is compatible with image-set. Other browsers have supported it long enough to be of little
+	 * concern.
+	 * @return True if compatible with CSS property image-set, including if -webkit- prefix is required. */
+	private static native boolean imageSetCompatible () /*-{
 		let match = $wnd.navigator.userAgent.match(/Firefox\/([0-9]+)\./);
 		return match !== null && match[1] >= 88;
 	}-*/;
