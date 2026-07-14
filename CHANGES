@@ -1,5 +1,6 @@
 [1.14.3]
 - API Addition: add() with 5-8 parameters for arrays.
+- Android: Predictive back events now fire keyUp event.
 
 [1.14.2]
 - [BREAKING CHANGE] Revert InputMultiplexer and set addAll return types that were breaking changes in 1.14.1. #7805
