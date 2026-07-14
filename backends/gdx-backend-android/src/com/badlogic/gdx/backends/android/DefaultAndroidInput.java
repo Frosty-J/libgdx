@@ -1422,9 +1422,9 @@ public class DefaultAndroidInput extends AbstractInput implements AndroidInput, 
 					downEvent.type = KeyEvent.KEY_DOWN;
 					downEvent.keyCode = Keys.BACK;
 					downEvent.keyChar = 0;
-          keyEvents.add(downEvent);
-          
-          KeyEvent upEvent = new KeyEvent();
+					keyEvents.add(downEvent);
+
+					KeyEvent upEvent = new KeyEvent();
 					upEvent.timeStamp = System.nanoTime();
 					upEvent.type = KeyEvent.KEY_UP;
 					upEvent.keyCode = Keys.BACK;
